@@ -38,3 +38,20 @@
 25. Cole o conteudo da chave privada copiado nos passos anteriores e cole no ide no aquivo vockey.pem e salve utilizando "ctrl+S".
 26.  Execute o comando `chmod 400 ~/.ssh/vockey.pem` para que a chave tenha a permissão correta.
 27. Execute o comando a seguir para instalar o terraform `sh installTerraform.sh`
+28. É necessário abrir as portas da maquina para as expêriencias em docker, para isso acesse o painel da [EC2](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:tag:Name=:aws-cloud9;instanceState=running;v=3;$case=tags:true%5C,client:false;$regex=tags:false%5C,client:false) e selecione a instancia do Cloud9.
+
+![](img/cloud9-1.png)
+
+29. Na parte infeiror da tela clique na aba segurança e clique no link do Grupos de Segurança
+
+![](img/cloud9-2.png)
+
+30. Na parte inferior direita clique em `Editar regras de entrada`
+
+![](img/cloud9-3.png)
+
+31. Adicione uma regra com a descrição abaixo e clique em `Salvar regras`:
+    1.  Tipo: `Todo o tráfego`
+    2.  Origem: `Qualquer local-IPv4`
+
+![](img/cloud9-4.png)
