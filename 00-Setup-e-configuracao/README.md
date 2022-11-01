@@ -22,8 +22,8 @@
     ![img/installserverless.png](img/installserverless.png)
 11. Execute o comando `sudo apt  install jq -y` para instalar o software que irá nos ajudar a ler e manipular Jsons no terminal
 12. Execute o comando `npm install -g c9` para baixar a extenãp que ajudará o Cloud9 a lidar melhor com o como abrir arquivos no IDE.
-13. Execute o comando `git clone https://github.com/vamperst/FIAP-CICD-DevSecOps.git` para clonar o repositório com os exercicios.
-14. Execute o comando `cd FIAP-CICD-DevSecOps/` para entrar na pasta criada pelo git
+13. Execute o comando `git clone https://github.com/vamperst/fiap-containers-e-orquestracao.git` para clonar o repositório com os exercicios.
+14. Execute o comando `cd fiap-containers-e-orquestracao/` para entrar na pasta criada pelo git
 15. Execute o comando `cd 00-Setup-e-configuracao` para entrar na pasta com os scripts de Configuração.
 16. Precisamos aumentar o tamanho do volume(HD) do cloud9. Para isso execute o comando  `sh resize.sh`
    ![img/resizeEBS](img/resizeEBS.png)
