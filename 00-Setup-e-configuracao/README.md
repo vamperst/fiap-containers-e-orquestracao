@@ -1,5 +1,3 @@
-# 01 - Setup e Configuração de ambiente
-
 # 00 - Setup e Configuração de ambiente
 
 Você irá utilizar 2 ferramentas para desenvolver os laboratorios:
