@@ -4,11 +4,10 @@ provider "aws" {
 }
 
 resource "aws_instance" "web" {
-  instance_type = "t3.medium"
+  instance_type = "t3.micro"
   ami           = "${lookup(var.aws_amis, var.aws_region)}"
   iam_instance_profile = "LabInstanceProfile"
 
-  count = 1
   vpc_security_group_ids = ["${aws_security_group.allow-ssh.id}"]
   key_name               = "${var.KEY_NAME}"
 
@@ -31,6 +30,6 @@ resource "aws_instance" "web" {
   }
 
   tags = {
-    Name = "${format("docker-swarm-worker-%03d", count.index + 1)}"
+    Name = "docker-swarm-manager"
   }
 }

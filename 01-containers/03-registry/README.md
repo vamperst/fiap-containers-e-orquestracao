@@ -93,5 +93,5 @@ docker push $accountID.dkr.ecr.us-east-1.amazonaws.com/primeiraimagem:1.1
 ![img/runlatest.png](img/runlatest.png)
 23. Teste no navegador para se certificar que funcionou
     ![img/firstimage1.png](img/firstimage1.png)
-20. Pare e remova o container recem criado. O nome do container é `primeira`
+20. Pare e remova o container recem criado conforme os comandos vistos anteriormente na demo. O nome do container é `primeira`
 
