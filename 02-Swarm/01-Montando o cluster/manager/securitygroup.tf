@@ -3,7 +3,7 @@ data "aws_vpc" "vpc" {
 }
 resource "aws_security_group" "allow-ssh" {
   vpc_id      = "${data.aws_vpc.vpc.id}"
-  name        = "allow-ssh"
+  name        = "allow-ssh-manager"
 
   egress {
     from_port   = 0
