@@ -38,6 +38,6 @@ resource "aws_security_group" "allow-ssh" {
   }
 
   tags = {
-    Name = "allow-ssh"
+    Name = "allow-ssh-manager"
   }
 }
