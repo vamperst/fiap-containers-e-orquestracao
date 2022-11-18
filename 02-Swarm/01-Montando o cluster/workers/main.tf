@@ -29,6 +29,7 @@ resource "aws_instance" "web" {
       "chmod +x /tmp/script.sh",
       "sudo /tmp/script.sh",
       "sudo cp /tmp/ecr-login.sh /etc/systemd/system/ecr-login.sh",
+      "sudo chmod +x /etc/systemd/system/ecr-login.sh",
       "sudo cp /tmp/docker_ecr_login.service /etc/systemd/system/docker_ecr_login.service",
       "sudo systemctl daemon-reload",
       "sudo systemctl enable docker_ecr_login",
