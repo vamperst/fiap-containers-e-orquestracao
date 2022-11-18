@@ -31,7 +31,8 @@ resource "aws_instance" "web" {
       "sudo cp /tmp/docker_ecr_login.service /etc/systemd/system/docker_ecr_login.service",
       "sudo systemctl daemon-reload",
       "sudo systemctl enable docker_ecr_login",
-      "sudo systemctl start docker_ecr_login"
+      "sudo systemctl start docker_ecr_login",
+      "sudo systemctl status docker_ecr_login"
 
     ]
   }
