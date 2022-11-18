@@ -1,0 +1,12 @@
+[Unit]
+Description=Docker aws ecr login
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+Type=oneshot
+User=builder
+ExecStart=/usr/bin/bash -c '$$(/usr/bin/aws ecr get-login --no-include-email)'
+
+[Install]
+WantedBy=default.target

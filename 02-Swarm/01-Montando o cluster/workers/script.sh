@@ -23,3 +23,6 @@ token=`aws ssm get-parameter --name "docker-join-worker-token" | jq .Parameter.V
 publicIp=`aws ssm get-parameter --name "docker-join-manager-ip" | jq .Parameter.Value -r`
 
 docker swarm join --token  $token $publicIp:2377
+
+accountID=`aws sts get-caller-identity | jq .Account -r`
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $accountID.dkr.ecr.us-east-1.amazonaws.com

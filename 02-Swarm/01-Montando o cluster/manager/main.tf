@@ -15,11 +15,24 @@ resource "aws_instance" "web" {
     source      = "script.sh"
     destination = "/tmp/script.sh"
   }
-
+  provisioner "file" {
+    source      = "docker_ecr_login.service"
+    destination = "/tmp/docker_ecr_login.service"
+  }
+  provisioner "file" {
+    source      = "ecr-login.sh"
+    destination = "/tmp/ecr-login.sh"
+  }
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/script.sh",
       "sudo /tmp/script.sh",
+      "sudo cp /tmp/ecr-login.sh /etc/systemd/system/ecr-login.sh",
+      "sudo cp /tmp/docker_ecr_login.service /etc/systemd/system/docker_ecr_login.service",
+      "sudo systemctl daemon-reload",
+      "sudo systemctl enable docker_ecr_login",
+      "sudo systemctl start docker_ecr_login"
+
     ]
   }
 
