@@ -51,8 +51,10 @@
     
 ![](img/3.png)
 
-15. Execute o comando `ip=`curl -s <http://169.254.169.254/latest/meta-data/public-ipv4>`&& echo http://$ip:5000` para gerar o link para acessar o serviço recem criado via docker.
-    
+15. Execute o comando abaixo para gerar o link para acessar o serviço recem criado via docker.
+    ```
+    ip=`curl -s <http://169.254.169.254/latest/meta-data/public-ipv4>`&& echo http://$ip:5000
+    ```
 ![](img/4.png)
 
 16. Acesse no navegador o link gerado no passo anterior.
@@ -68,7 +70,10 @@ docker container rm primeiro
 ![img/dockerrm1.png](img/dockerrm1.png)
 
 18.  Para alterar o conteudo do que é exibido no navegador quando executa um container da imagem criada utilize o comando `sed -i -e 's/!!!!/!1.1/g' app.py`
-    ![img/sed1.png](img/sed1.png)
+
+    
+![img/sed1.png](img/sed1.png)
+
 19. Execute os comando abaixo para criar uma nova imagem e fazer o push para o repositório no ECR. Copie e execute uma linha por vêz.
 
 ``` shell
@@ -96,6 +101,5 @@ docker push $accountID.dkr.ecr.us-east-1.amazonaws.com/primeiraimagem:1.1
 23. Teste no navegador para se certificar que funcionou
     
     ![img/firstimage1.png](img/firstimage1.png)
-    
 24. Pare e remova o container recem criado conforme os comandos vistos anteriormente na demo. O nome do container é `primeira`
 
