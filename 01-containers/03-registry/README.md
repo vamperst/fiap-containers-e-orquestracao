@@ -3,6 +3,7 @@
 1. No cloud9 execute o comando `cd  ~/environment && git clone https://github.com/vamperst/pyhton-app-docker-test.git`, e após entre na pasta criada com o comando `cd pyhton-app-docker-test/`
 ![img/gitclone.png](img/gitclone.png)
 3. Mude de branch do repositório com o sequinte comando `git fetch && git checkout registry`
+   
    ![img/gitfetch.png](img/gitfetch.png)
 
 4. Nos próximos passos vamos criar um repositório no ECR para sua imagem. Para tal abra o [link](https://us-east-1.console.aws.amazon.com/ecr/get-started?region=us-east-1) no seu navegador.
@@ -81,6 +82,7 @@ docker tag primeiraimagem:1.1 $accountID.dkr.ecr.us-east-1.amazonaws.com/primeir
 docker push $accountID.dkr.ecr.us-east-1.amazonaws.com/primeiraimagem:1.1
 
 ```
+
 ![](img/6.png)
 
 
@@ -92,6 +94,8 @@ docker push $accountID.dkr.ecr.us-east-1.amazonaws.com/primeiraimagem:1.1
 22. Vamos agora executar um container da nova imagem utilize o comando `docker run -d --name primeira -p 5000:5000 $accountID.dkr.ecr.us-east-1.amazonaws.com/primeiraimagem:1.1`. 
 ![img/runlatest.png](img/runlatest.png)
 23. Teste no navegador para se certificar que funcionou
+    
     ![img/firstimage1.png](img/firstimage1.png)
-20. Pare e remova o container recem criado conforme os comandos vistos anteriormente na demo. O nome do container é `primeira`
+    
+24. Pare e remova o container recem criado conforme os comandos vistos anteriormente na demo. O nome do container é `primeira`
 
