@@ -4,7 +4,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "web" {
-  instance_type = "t3.medium"
+  instance_type = "t2.medium"
   ami           = "${lookup(var.aws_amis, var.aws_region)}"
   iam_instance_profile = "LabInstanceProfile"
 
