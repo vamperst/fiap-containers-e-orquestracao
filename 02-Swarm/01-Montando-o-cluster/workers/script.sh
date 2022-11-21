@@ -17,7 +17,7 @@ sudo ./aws/install
 
 sudo yum install jq -y
 
-publicIp=`curl http://169.254.169.254/latest/meta-data/public-ipv4`
+
 
 aws configure set default.region us-east-1
 token=`aws ssm get-parameter --name "docker-join-worker-token" | jq .Parameter.Value -r`
@@ -25,6 +25,7 @@ publicIp=`aws ssm get-parameter --name "docker-join-manager-ip" | jq .Parameter.
 
 docker swarm join --token  $token $publicIp:2377
 
+publicIp=`curl http://169.254.169.254/latest/meta-data/public-ipv4`
 aws ssm put-parameter --name "docker-worker-ip" --value $publicIp --type "String" || aws ssm put-parameter --name "docker-worker-ip" --value $publicIp --type "String" --overwrite
 
 accountID=`aws sts get-caller-identity | jq .Account -r`
