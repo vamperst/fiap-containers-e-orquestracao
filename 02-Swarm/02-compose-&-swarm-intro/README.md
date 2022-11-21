@@ -1,4 +1,4 @@
-## Conteiners 2.2 - COmpose & Swarm Intro
+## Conteiners 2.2 - Compose & Swarm Intro
 
 1. Volte a raiz do seu cloud9 com o comando `cd ~/environment`
 2.  Baixe o repositório a ser utilizado nessa demo com o comando `git clone https://github.com/vamperst/python-redis-docker-compose-intro.git`
