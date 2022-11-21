@@ -53,7 +53,7 @@
 
 15. Execute o comando abaixo para gerar o link para acessar o serviço recem criado via docker.
     ```
-    ip=`curl -s <http://169.254.169.254/latest/meta-data/public-ipv4>`&& echo http://$ip:5000
+    ip=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4`&& echo http://$ip:5000
     ```
 ![](img/4.png)
 
