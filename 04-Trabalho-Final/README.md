@@ -23,9 +23,9 @@ Monte um zip contendo:
 
 ##### Material para consulta
 
-Dockerfile: [link](https://github.com/vamperst/fiap-containers-e-orquestracao/tree/master/01-containers/02-Dockerfile)
-ECR: [link](https://github.com/vamperst/fiap-containers-e-orquestracao/tree/master/01-containers/03-registry)
-Criar cluster swarm: [link](https://github.com/vamperst/fiap-containers-e-orquestracao/tree/master/02-Swarm/01-Montando-o-cluster)
-Docker-compose e execução: [link](https://github.com/vamperst/fiap-containers-e-orquestracao/tree/master/02-Swarm/02-compose-%26-swarm-intro)
+1. Dockerfile: [link](https://github.com/vamperst/fiap-containers-e-orquestracao/tree/master/01-containers/02-Dockerfile)
+2. ECR: [link](https://github.com/vamperst/fiap-containers-e-orquestracao/tree/master/01-containers/03-registry)
+3. Criar cluster swarm: [link](https://github.com/vamperst/fiap-containers-e-orquestracao/tree/master/02-Swarm/01-Montando-o-cluster)
+4. Docker-compose e execução: [link](https://github.com/vamperst/fiap-containers-e-orquestracao/tree/master/02-Swarm/02-compose-%26-swarm-intro)
 
 
