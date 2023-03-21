@@ -1,6 +1,6 @@
 # Trabalho final Docker, Swarm and Registry
 
-Para executar o trabalho crie uma pasta na raiz do cloud9. Para tal execute o comando `mkdir ~/environment/trabalho-final && cd ~/environment/trabalho-final`
+Para executar o trabalho crie uma pasta na raiz do cloud9. Para tal execute o comando `mkdir -p ~/environment/trabalho-final && cd ~/environment/trabalho-final`
 
 1. Crie um Dockerfile que instale um NGINX utilizando um Ubuntu latest como base.
    1. Imagem a ser utilizada como base: [ubuntu:latest](https://hub.docker.com/_/ubuntu)
