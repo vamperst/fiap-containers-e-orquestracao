@@ -9,7 +9,7 @@ Para executar o trabalho crie uma pasta na raiz do cloud9. Para tal execute o co
 2. Crie um cluster swarm.
 3. Crie um repositório do ECR e faça o push da imagem montada no passo 2.
 4. Crie um docker-compose.yml que contenha:
-   1. Um serviço chamado "web" que utiliza sua imagem do ECR, utilize e porta 80 do nó e que apenas possa ser executado no nó manager.
+   1. Um serviço chamado "web" que utiliza sua imagem do ECR, utilize a porta 80 do container e porta 5000 do nó e que apenas possa ser executado no nó manager.
    2. Criar uma network chamada "servico" do tipo overlay e attachable
 5. Rode o docker compose criado no cluster swarm.
 
