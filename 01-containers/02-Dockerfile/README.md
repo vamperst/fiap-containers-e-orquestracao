@@ -113,4 +113,4 @@ done
 
 ![img/curlbycontainercommand.png](img/curlbycontainercommand.png)
 
-1.  Para deletar todos os containers utilize o script containerDown.sh com o comando `sh containerDown.sh`. Não se esqueça de eliminar o container 0 com o comando `docker container rm -f python-app-0`
+30.  Para deletar todos os containers utilize o script containerDown.sh com o comando `sh containerDown.sh`. Não se esqueça de eliminar o container 0 com o comando `docker container rm -f python-app-0`
