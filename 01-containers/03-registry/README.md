@@ -15,7 +15,7 @@
 
 ![](img/ecr-2.png)
 
-8. Quando o repositório é criado a tela fica como a imagem abaixo. Clique em `Visualizar comando push` do canto superior direito.
+8. Quando o repositório é criado a tela fica como a imagem abaixo. Selecione o repositório. Clique em `Visualizar comando push` do canto superior direito.
 
 ![](img/ecr-3.png)
 
