@@ -60,3 +60,4 @@ Você irá utilizar 2 ferramentas para desenvolver os laboratorios:
 8.  Execute o comando `cd 00-Setup-e-configuracao` para entrar na pasta com os scripts de Configuração.
 9.  Precisamos aumentar o tamanho do volume(HD) do cloud9. Para isso execute o comando  `sh resize.sh`
    ![img/resizeEBS](img/resizeEBS.png)
+10. Execute o comando `sh installDocker.sh` para instalar o docker.
