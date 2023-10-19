@@ -15,13 +15,25 @@
 7. Cole o conteudo da chave SSH que você copiou anteriormente e salve o arquivo utilizando ctrl + S.
    
    ![](img/8.png)
+8. No terminal execute o comando `chmod 400 ~/.ssh/vockey.pem` para dar as permissões corretas para a chave SSH.
+9.  O seu cloud9 será seu nó master do cluster. Para isso execute a lista de comandos abaixo:
+``` shell
+publicIp=`curl http://169.254.169.254/latest/meta-data/public-ipv4`
 
-8. A aplicação que irá provisionar o cluster se chama [terraform](https://www.terraform.io/) e para inicializar ela execute o comando `terraform init`
-   ![](img/1.png)
-9.  Agora para provisionar o nó master execute o comando `terraform apply --auto-approve`. Esse comando pode demorar por volta de 5 minutos para terminar.
-![](img/2.png)
-1. Com o nó master de pé agora é hora de provisionar o worker para isso entre na pasta com o comando `cd ~/environment/fiap-containers-e-orquestracao/02-Swarm/01-Montando-o-cluster/workers/`.
-2. Execute o comando `terraform init` para inicializar o terraform dos workers.
+docker swarm init --advertise-addr $publicIp
+token=`docker swarm join-token worker -q`
+tokenManager=`docker swarm join-token manager -q`
+
+aws configure set default.region us-east-1
+aws ssm put-parameter --name "docker-join-worker-token" --value $token --type "String" || aws ssm put-parameter --name "docker-join-worker-token" --value $token --type "String" --overwrite
+aws ssm put-parameter --name "docker-join-manager-token" --value $tokenManager --type "String" || aws ssm put-parameter --name "docker-join-manager-token" --value $tokenManager --type "String" --overwrite
+aws ssm put-parameter --name "docker-join-manager-ip" --value $publicIp --type "String" || aws ssm put-parameter --name "docker-join-manager-ip" --value $publicIp --type "String" --overwrite
+```
+10. Com o nó master de pé agora é hora de provisionar o worker para isso entre na pasta com o comando `cd ~/environment/fiap-containers-e-orquestracao/02-Swarm/01-Montando-o-cluster/workers/`.
+11. Execute o comando `terraform init` para inicializar o terraform dos workers.
    ![](img/3.png)
-3. Para provisionar o nó worker do cluster swarm utilize o comando `terraform apply --auto-approve`. Esse comando pode demorar por volta de 5 minutos para terminar.
+12. Para provisionar o nó worker do cluster swarm utilize o comando `terraform apply --auto-approve`. Esse comando pode demorar por volta de 5 minutos para terminar.
    ![](img/4.png)
+13. Ao final se executar o comando `docker node ls` verá os 2 nós no cluster.
+   
+   ![](img/10.png)

@@ -10,7 +10,6 @@
     ``` 
 4. Note no visualizer que o container no visualizer ficou em um nó manager como esta na configuração.
     ```
-    publicIp=`aws ssm get-parameter --name "docker-join-manager-ip" | jq .Parameter.Value -r` && echo "http://$publicIp:8080"
     publicC9Ip=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4` && echo "http://$publicC9Ip:8080"
     ```
     ![img/visualizer1.png](img/visualizer1.png)
