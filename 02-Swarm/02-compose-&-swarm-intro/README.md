@@ -2,7 +2,9 @@
 
 1. Volte a raiz do seu cloud9 com o comando `cd ~/environment`
 2.  Baixe o repositório a ser utilizado nessa demo com o comando `git clone https://github.com/vamperst/python-redis-docker-compose-intro.git`
+
 ![img/gitclone.png](img/gitclone.png)
+
 2. Entre na pasta 'python-redis-docker-compose-intro' com o comando `cd ~/environment/python-redis-docker-compose-intro`
 3. Execute o comando `c9 open Dockerfile` para ver o conteudo do Dockerfile
    
@@ -80,5 +82,5 @@
 20. Voltando ao Cloud9, agora vamos remover tudo do cluster. Primeiro a stack, execute o comando `docker stack rm app-counter`. Vai conseguir notar no visualizer que logo após o comando, os containers sumiram rapidamente.
     
     ![img/visualizer2.png](img/visualizer2.png)
-    
+
 21. Por fim remova o serviço criado para o visualizer com o comando `docker service rm viz`
