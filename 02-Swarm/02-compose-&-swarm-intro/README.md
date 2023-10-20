@@ -34,53 +34,44 @@
     docker tag app-counter:latest $accountID.dkr.ecr.us-east-1.amazonaws.com/app-counter:1.0
     docker push $accountID.dkr.ecr.us-east-1.amazonaws.com/app-counter:1.0
     ```
-12. Antes de criar o deploy da aplicação você deve garantir que o terminal utilizado esta logado no ECR e que maquina do Cloud9 se juntou ao cluster swarm criado anteriormente como nó manager. Para tal execute os comandos abaixo:
-    ``` shell
-    publicIp=`aws ssm get-parameter --name "docker-join-manager-ip" | jq .Parameter.Value -r` 
-    token=`aws ssm get-parameter --name "docker-join-manager-token" | jq .Parameter.Value -r` 
-    docker swarm init
-    accountID=`aws sts get-caller-identity | jq .Account -r`
-    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $accountID.dkr.ecr.us-east-1.amazonaws.com
-    ```
-    ![](img/2.png)
 
-13. Execute o comando `docker stack deploy --with-registry-auth --compose-file docker-compose.yml app-counter` para subir todos os serviços
+12. Execute o comando `docker stack deploy --with-registry-auth --compose-file docker-compose.yml app-counter` para subir todos os serviços
    
    ![img/stackcreate.png](img/stackcreate.png)
 
-14. Execute o comando `docker stack ls` para ver o status da stack completa
+13. Execute o comando `docker stack ls` para ver o status da stack completa
     
     ![img/stackls1.png](img/stackls1.png)
 
-15. Você também pode verificar a saude dos serviços através do comando `docker service ls`
+14. Você também pode verificar a saude dos serviços através do comando `docker service ls`
     
     ![img/servicels1.png](img/servicels1.png)
 
-16. Caso todos os serviços estejam rodando conforme a imagem acima é hora de acessar o serviço criado. Para isso você vai precisar acessar via o IP público do nó manager, utilize o comando abaixo para gerar o link.
+15. Caso todos os serviços estejam rodando conforme a imagem acima é hora de acessar o serviço criado. Para isso você vai precisar acessar via o IP público do nó manager, utilize o comando abaixo para gerar o link.
     ```
     workerIp=`aws ssm get-parameter --name "docker-worker-ip" | jq .Parameter.Value -r` && echo "http://$workerIp:5000"
     ```
     ![](img/3.png)
 
-17. Ao acessar via navegador você pode recarregar a página e ver o contador aumentar por que a cada vez que acessa um registro no redis é atualizado.
+16. Ao acessar via navegador você pode recarregar a página e ver o contador aumentar por que a cada vez que acessa um registro no redis é atualizado.
     
     ![](img/4.png)
 
-18. De volta ao Coud9, para visualizar todos os containers em execução e onde estão vamos utilizar o Visualizer. Para tal execute o comando `docker service create --name=viz --publish=8080:8080/tcp  --constraint=node.role==manager --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock dockersamples/visualizer`
+17. De volta ao Coud9, para visualizar todos os containers em execução e onde estão vamos utilizar o Visualizer. Para tal execute o comando `docker service create --name=viz --publish=8080:8080/tcp  --constraint=node.role==manager --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock dockersamples/visualizer`
     
     ![](img/5.png)
 
     ![](img/6.png)
 
-19. Utilize o comando abaixo para visualizar onde estão rodando cada container de serviço no cluster.
+18. Utilize o comando abaixo para visualizar onde estão rodando cada container de serviço no cluster.
     ```
     publicC9Ip=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4` && echo "http://$publicC9Ip:8080"
     ```
     
     ![img/visualizer.png](img/visualizer.png)
 
-20. Voltando ao Cloud9, agora vamos remover tudo do cluster. Primeiro a stack, execute o comando `docker stack rm app-counter`. Vai conseguir notar no visualizer que logo após o comando, os containers sumiram rapidamente.
+19. Voltando ao Cloud9, agora vamos remover tudo do cluster. Primeiro a stack, execute o comando `docker stack rm app-counter`. Vai conseguir notar no visualizer que logo após o comando, os containers sumiram rapidamente.
     
     ![img/visualizer2.png](img/visualizer2.png)
 
-21. Por fim remova o serviço criado para o visualizer com o comando `docker service rm viz`
+20. Por fim remova o serviço criado para o visualizer com o comando `docker service rm viz`
