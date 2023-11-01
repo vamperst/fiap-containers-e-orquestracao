@@ -30,49 +30,43 @@ Essas são apenas algumas das ferramentas disponíveis para simular um cluster K
 
 Ter o Docker instalado, como dito anteriormente, ele cria o cluster em containers e o Docker é essencial para o funcionamento do Lab, ter o `curl` ou o `wget` instalados para poder executar o script de instalação e por último o kubectl para gerenciarmos o nosso cluster.
 
-Link de instalação do Docker para Linux, Windows e MacOS:\
-https://docs.docker.com/get-docker/
 
-Link de instalação do kubectl para Linux, Windows e MacOS:\
-https://kubernetes.io/docs/tasks/tools/
+### Instalando o Kubectl on Cloud 9
+1. Execute os comandos a seguir para instalar o kubectl:
+```shell
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+kubectl version --client
 
-Instalando curl:
-
-Mac: `brew install curl`
-Windows: `choco install curl -y`
-Linux: Distribuições baseadas em Debian: `apt install curl -y` Distribuições baseadas em Red Hat: `yum install curl -y`
-
-Instalando wget:
-
-Mac: `brew install wget`
-Windows: `choco install wget -y`
-Linux: Distribuições baseadas em Debian: `apt install wget` Distribuições baseadas em Red Hat: `yum install wget`
+```
 
 ### Instalando o k3d
 Após a instalação do docker, iremos instalar o k3d.
 
-O k3d é instalado através de um script e existe duas formas de realizar a instalação.
+Para o instalaer o K3D no cloud9 bastar utilizar o comando abaixo:
 
-WGET:
-```
+
+``` shell
 wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-```
-CURL:
-```
-curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 ```
 
 Após instalar o k3d, vamos testar se foi instalado corretamente:
+``` shell
+k3d --version
 ```
-$ k3d --version
+
+``` shell
+OUTPOUT:
 k3d version v5.4.8
 k3s version v1.25.6-k3s1 (default)
 ```
 
 Após checar se a instalação está correta, iremos criar o nosso cluster.
 
-Execute o comando abaixo para criar o cluster
-```
+2. Execute o comando abaixo para criar o cluster
+``` shell
 k3d cluster create hands-on --servers 1 --agents 3 --port 9080:80@loadbalancer --port 9443:443@loadbalancer --api-port 6443 --k3s-arg "--disable=traefik@server:0"
 ```
 
@@ -115,49 +109,64 @@ INFO[0020] Cluster 'hands-on' created successfully!
 INFO[0020] You can now use it like this:
 ```
 
-Listando o nosso cluster com o k3d:
+3. Listando o nosso cluster com o k3d:
 
-```
-$ k3d cluster list
-NAME       SERVERS   AGENTS   LOADBALANCER
-hands-on   1/1       3/3      true
+``` shell
+k3d cluster list
 ````
 
-Verificando se os componentes do cluster está executando corretamente:
-
+``` shell
+OUTPUT:
+NAME       SERVERS   AGENTS   LOADBALANCER
+hands-on   1/1       3/3      true
 ```
-$ kubectl cluster-info
 
+4. Verificando se os componentes do cluster está executando corretamente:
+
+``` shell
+kubectl cluster-info
+```
+
+``` shell
+OUTPUT:
 Kubernetes control plane is running at https://0.0.0.0:6443
 CoreDNS is running at https://0.0.0.0:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 Metrics-server is running at https://0.0.0.0:6443/api/v1/namespaces/kube-system/services/https:metrics-server:https/proxy
-
 ```
 
-Verificando se o Scheduler e o Controller-Manager está funcionando corretamente.
+5. Verificando se o Scheduler e o Controller-Manager está funcionando corretamente.
 
-```
+``` shell
 kubectl get componentstatuses
+```
+
+``` shell
+OUTPUT:
 NAME                 STATUS    MESSAGE   ERROR
 scheduler            Healthy   ok
 controller-manager   Healthy   ok
 ```
+6. Listando os nós do cluster:
 
-Listando os nós do cluster:
-
+``` shell
+kubectl get nodes
 ```
-$ kubectl get nodes
+``` shell
+OUTPUT: 
 NAME                    STATUS   ROLES                  AGE     VERSION
 k3d-hands-on-agent-2    Ready    <none>                 4m33s   v1.25.6+k3s1
 k3d-hands-on-server-0   Ready    control-plane,master   4m36s   v1.25.6+k3s1
 k3d-hands-on-agent-1    Ready    <none>                 4m33s   v1.25.6+k3s1
 k3d-hands-on-agent-0    Ready    <none>                 4m32s   v1.25.6+k3s1
 ```
+7. Listando os componentes do cluster
 
-Listando os componentes do cluster
-
+``` shell
+kubectl get all --all-namespaces
 ```
-$ kubectl get all --all-namespaces
+
+``` shell
+OUTPUT:
 NAMESPACE     NAME                                          READY   STATUS    RESTARTS   AGE
 kube-system   pod/coredns-597584b69b-6g8qb                  1/1     Running   0          2m33s
 kube-system   pod/local-path-provisioner-79f67d76f8-8xgw8   1/1     Running   0          2m33s
@@ -191,10 +200,13 @@ Em resumo, o kubectl é a principal ferramenta de gerenciamento de Kubernetes qu
 
 Obs: O k3d configura o contexto do cluster de forma automática, então iremos apenas listar os contextos já configurados.
 
-Listando os contextos dos clusters configurados:
+8. Listando os contextos dos clusters configurados:
 
-```
+``` shell
 kubectl config get-contexts
+```
+``` shell
+OUTPUT:
 CURRENT   NAME                                                   CLUSTER                                                    AUTHINFO                                                   NAMESPACE
           arn:aws:eks:us-east-1:223341017520:cluster/backend     arn:aws:eks:us-east-1:223341017520:cluster/backend         arn:aws:eks:us-east-1:223341017520:cluster/backend
           docker-desktop                                         docker-desktop                                             docker-desktop
@@ -286,44 +298,59 @@ spec:
 `image:` especifica a imagem do container que será utilizada.\
 `ports:` especifica as portas que serão expostas pelo container. Neste caso, a porta 80 foi exposta.\
 
-Após entender cada item do nosso manifesto, vamos utilizar ele para realizar o deploy do nosso app.
+9. Após entender cada item do nosso manifesto, vamos utilizar ele para realizar o deploy do nosso app.
 
-```
-$ kubectl apply -f manifests/deployment.yaml
-deployment.apps/nginx-deployment created
+``` shell
+cd ~/environment/fiap-containers-e-orquestracao/03-kubernetes/01-cluster-local/
+kubectl apply -f manifests/deployment.yaml
 ```
 
-Após aplicado, iremos listar a nossa app.
+10. Após aplicado, iremos listar a nossa app.
 
+``` shell
+kubectl get pods -l app=nginx
 ```
-$ kubectl get pods -l app=nginx
+
+``` shell
+OUTPUT:
 default       nginx-deployment-cd55c47f5-7sbgz          0/1     ContainerCreating   0          7s
 default       nginx-deployment-cd55c47f5-c68ww          0/1     ContainerCreating   0          7s
 ```
 
-Vamos realizar o get novamente para verificar se os `PODS` da app subiram.
+11. Vamos realizar o get novamente para verificar se os `PODS` da app subiram.
 
+``` shell
+kubectl get pods  -l app=nginx
 ```
-$ kubectl get pods  -l app=nginx
+
+``` shell
+OUTPUT:
 NAME                               READY   STATUS    RESTARTS   AGE
 nginx-deployment-cd55c47f5-c68ww   1/1     Running   0          67s
 nginx-deployment-cd55c47f5-7sbgz   1/1     Running   0          67s
 ```
 
-Trazendo informação mais detalhada dos pods.
+12. Trazendo informação mais detalhada dos pods.
 
-```
+``` shell
 kubectl get pods  -l app=nginx -o wide
+```
+
+``` shell
+OUTPUT:
 NAME                                READY   STATUS    RESTARTS   AGE     IP          NODE                    NOMINATED NODE   READINESS GATES
 nginx-deployment-5954ddfcc9-kl6pl   1/1     Running   0          2m14s   10.42.3.7   k3d-hands-on-server-0   <none>           <none>
 nginx-deployment-5954ddfcc9-zchtl   1/1     Running   0          2m10s   10.42.0.7   k3d-hands-on-agent-1    <none>           <none>
 ```
 
-Conhecendo o POD da nossa app, com o comando `kubectl describe pods <pod-name>`
+13. Conhecendo o POD da nossa app, com o comando `kubectl describe pods <pod-name>` . Escolha o node de um pod listado anteriromente.
 
+``` shell
+kubectl describe pods nginx-deployment-cd55c47f5-c68ww
 ```
-$ kubectl describe pods nginx-deployment-cd55c47f5-c68ww
 
+``` shell
+OUTPUT:
 Name:             nginx-deployment-cd55c47f5-c68ww
 Namespace:        default
 Priority:         0
@@ -379,21 +406,26 @@ Events:
   Normal  Started    15m   kubelet            Started container nginx
 ```
 
-Conhecendo o nosso deploy, utilizando o comando `kubectl describe deploy <deploy-name>`, mas antes iremos pegar o nome do nosso deploy\
+14. Conhecendo o nosso deploy, utilizando o comando `kubectl describe deploy <deploy-name>`, mas antes iremos pegar o nome do nosso deploy\
 Primeiro vamos realizar o `kubectl get deploy` para listar todos os deploys de todos os namespaces.\
 
 
-```
-$ kubectl get deploy
+``` shell
+kubectl get deploy
+````
+``` shell
+OUTPUT:
 NAME               READY   UP-TO-DATE   AVAILABLE   AGE
 nginx-deployment   2/2     2            2           20m
 ```
 
-Descrevendo o deploy `nginx-deployment`.
+15. Descrevendo o deploy `nginx-deployment`.
 
-```
+``` shell
 $ kubectl describe deploy nginx-deployment
-
+```
+``` shell
+OUTPUT:
 Name:                   nginx-deployment
 Namespace:              default
 CreationTimestamp:      Thu, 16 Mar 2023 15:24:44 -0300
@@ -465,14 +497,18 @@ Este manifesto descreve um serviço do Kubernetes com as seguintes configuraçõ
 
 Após entender cada item do nosso manifesto, vamos utilizar ele para realizar o deploy da nossa service.
 
-```
-$ kubectl apply -f manifests/service.yaml
+``` shell
+cd ~/environment/fiap-containers-e-orquestracao/03-kubernetes/01-cluster-local/
+kubectl apply -f manifests/service.yaml
 service/nginx-service created
 ```
 
-Checando se a service foi criada com sucesso.
+16. Checando se a service foi criada com sucesso.
+``` shell
+kubectl get service
 ```
-$ kubectl get service
+``` shell
+OUTPUT:
 NAME            TYPE           CLUSTER-IP      EXTERNAL-IP                                   PORT(S)        AGE
 kubernetes      ClusterIP      10.43.0.1       <none>                                        443/TCP        18m
 nginx-service   LoadBalancer   10.43.169.188   172.22.0.3,172.22.0.4,172.22.0.5,172.22.0.6   80:31258/TCP   8m16s
@@ -480,10 +516,10 @@ nginx-service   LoadBalancer   10.43.169.188   172.22.0.3,172.22.0.4,172.22.0.5,
 
 Repare que a nossa service `nginx-service` foi criada com sucesso.
 
-Agora vamos acessar o app através do navegador, digite a url abaixo:
+17. Agora vamos acessar o app através do navegador, gere a url com o comando abaixo abaixo:
 
 ```
-http://localhost:9080/
+publicC9Ip=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4` && echo "http://$publicC9Ip:9080"
 ```
 ![nginx](img/nginx-frontend.png)
 
@@ -491,17 +527,25 @@ Sucesso! conseguimos acessar a nossa app.
 
 ### Escalando os PODs
 
-Para escalar os pods iremos executar o comando `kubectl scale deployment`, atualmente temos 2 répicas e iremos aumentar para 8 réplicas.
+18. Para escalar os pods iremos executar o comando `kubectl scale deployment`, atualmente temos 2 répicas e iremos aumentar para 8 réplicas.
 
-```
+``` shell
 kubectl scale deployment nginx-deployment --replicas=8
+```
+
+``` shell
+OUTPUT:
 deployment.apps/nginx-deployment scaled
 ```
 
-Checando se foi escalado corretamente.
+19. Checando se foi escalado corretamente.
 
+``` shell
+kubectl get pods -l app=nginx
 ```
-$ kubectl get pods -l app=nginx
+
+``` shell
+OUTPUT:
 NAME                               READY   STATUS              RESTARTS   AGE
 nginx-deployment-cd55c47f5-c68ww   1/1     Running             0          47m
 nginx-deployment-cd55c47f5-7sbgz   1/1     Running             0          47m
@@ -529,63 +573,93 @@ nginx-deployment-cd55c47f5-85rfb   1/1     Running   0          71s
 
 Pronto os PODs foram escalados com sucesso!
 
-Vamos voltar para duas réplicas.
+20. Vamos voltar para duas réplicas.
 
-```
+``` shell
 kubectl scale deployment nginx-deployment --replicas=2
+```
+
+``` shell
+OUTPUT:
 deployment.apps/nginx-deployment scaled
 ```
 
 ### Realizando rollback de versão
 
-Para realizar o rollback da versão iremos aplicar o manifesto `manifests/deployment-v1.yaml`
+21. Para realizar o rollback da versão iremos aplicar o manifesto `manifests/deployment-v1.yaml`
 
+``` shell
+kubectl apply -f manifests/deployment-v1.yaml
 ```
-$ kubectl apply -f manifests/deployment-v1.yaml
+
+``` shell
+OUTPUT:
 deployment.apps/nginx-deployment configured
 ```
 
 Execute o curl para verificar se alterou a versão.
 
+``` shell
+curl http://$publicC9Ip:9080/
 ```
-$ curl http://localhost:9080/
+
+``` shell
+OUTPUT:
 DEPLOYMENT VERSAO 1
 ```
 
-Após realizar o deploy, vamos realizar o deploy do `manifests/deployment-v2.yaml`
+22. Após realizar o deploy, vamos realizar o deploy do `manifests/deployment-v2.yaml`
 
+``` shell
+kubectl apply -f manifests/deployment-v2.yaml
 ```
-$ kubectl apply -f manifests/deployment-v1.yaml
+``` shell
+OUTPUT:
 deployment.apps/nginx-deployment configured
 ```
 
-Execute o curl para verificar se alterou a versão.
+23. Execute o curl para verificar se alterou a versão.
 
+``` shell
+curl http://$publicC9Ip:9080/
 ```
-$ curl http://localhost:9080/
+
+``` shell
+OUTPUT:
 DEPLOYMENT VERSAO 2
 ```
 
-Repare que os pods estão recém criados:
+24. Repare que os pods estão recém criados:
+``` shell
+kubectl get pods -l app=nginx
 ```
-$ kubectl get pods -l app=nginx
+
+``` shell
+OUTPUT:
 NAME                                READY   STATUS    RESTARTS   AGE
 nginx-deployment-75b69f9778-974lm   1/1     Running   0          42s
 nginx-deployment-75b69f9778-jxsch   1/1     Running   0          40s
 ```
 
-Realize o curl para retornar testar se estamos utilizar o curl.
+25. Realize o curl para retornar testar se estamos utilizar o curl.
 
+``` shell
+curl http://$publicC9Ip:9080/
 ```
-$ curl http://localhost:9080/
+``` shell
+OUTPUT:
 DEPLOYMENT VERSAO 2
 ```
 
-Agora iremos realizar o Rollback para a versão 1 do nosso deployment.
+26. Agora iremos realizar o Rollback para a versão 1 do nosso deployment.
 O Deployment cria uma revisão a cada alteração no deploy, para listar essas versões iremos utilizar o `kubectl rollout history`:
 
+``` shell
+kubectl rollout history deploy nginx-deployment
 ```
-$ kubectl rollout history deploy nginx-deployment
+
+``` shell
+OUTPUT:
 deployment.apps/nginx-deployment
 REVISION  CHANGE-CAUSE
 1         <none>
@@ -593,20 +667,27 @@ REVISION  CHANGE-CAUSE
 3         <none>
 ```
 
-Agora vamos realizar o rollback para a versão 2 da nossa app.
+27. Agora vamos realizar o rollback para a versão 2 da nossa app.
 
 ```
-$ kubectl rollout undo deployment/nginx-deployment --to-revision=1
+kubectl rollout undo deployment/nginx-deployment --to-revision=1
+```
+
+``` shell
+OUTPUT:
 deployment.apps/nginx-deployment rolled back
 ```
 
 ### Coletado os logs dos pods.
 
-Para coletar os logs dos PODs, iremos utilizar o `kubectl logs -f`
+28. Para coletar os logs dos PODs, iremos utilizar o `kubectl logs -f <NOME DO POD>`
 
-```
+``` shell
 kubectl logs -f nginx-deployment-cd55c47f5-knjsg
+```
 
+``` shell
+OUTPUT:
 /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
 /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
 /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
@@ -634,15 +715,6 @@ Logs dos GETS realizados
 10.42.0.0 - - [16/Mar/2023:20:33:56 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.86.0" "-"
 ```
 
-### Executando comandos dentro do POD
-
-Para executar comandos dentro dos pods, iremos utilizar o `kubectl exec -ti <pod> -- sh`
-
-```
-$ kubectl exec -ti nginx-deployment-5954ddfcc9-kl6pl -- sh
-# curl localhost
-DEPLOYMENT VERSAO 1
-````
 
 ### Finalizando o Lab.
 
@@ -650,24 +722,35 @@ Agora é hora de limpar a casa! :)
 
 Vamos deletar os objetos que criamos dentro do nosso cluster Kubernetes
 
-Deletando a Service:
+29. Deletando a Service:
 
+``` shell
+kubectl delete -f service.yaml
 ```
-$ kubectl delete -f service.yaml
+``` shell
+OUTPUT:
 service "nginx-service" deleted
 ```
 
-Deletendo o Deployment:
+30. Deletendo o Deployment:
 
-```
+``` shell
 kubectl delete -f deployment-v1.yaml
+```
+
+``` shell
+OUTPUT:
 deployment.apps "nginx-deployment" delete
 ```
 
 E por último vamos deletar o nosso cluster.
 
-```
+``` shell
 k3d cluster delete hands-on
+```
+
+``` shell
+OUTPUT:
 INFO[0000] Deleting cluster 'hands-on'
 INFO[0001] Deleting cluster network 'k3d-hands-on'
 INFO[0001] Deleting 1 attached volumes...
