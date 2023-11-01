@@ -94,13 +94,27 @@ Ao clicar no ícone do CloudShell ele irá provisionar um console para você pod
 
 Agora que conhece o CloudShell e para que ele serve, iremos utilizar ele até o final desta aula.
 
-Nosso cluster já foi provisionado e agora precisamos gerenciar ele, lembra que eu comentei sobre o API Server que o cliente (kubectl) se conecta a ele para poder gerenciar o cluster, agora iremos configurar o kubectl, execute o comando abaixo no CloudShell:
+Nosso cluster já foi provisionado e agora precisamos gerenciar ele, lembra que eu comentei sobre o API Server que o cliente (kubectl) se conecta a ele para poder gerenciar o cluster.
+
+### Conhecendo o kubectl
+
+O kubectl é uma ferramenta de linha de comando utilizada para interagir com clusters Kubernetes. Ele permite que os usuários gerenciem aplicativos e recursos em um cluster Kubernetes, como implantações, serviços, pods, configurações, etc.
+
+Com o kubectl, é possível implantar e escalar aplicativos, fazer rolling updates e rollbacks, gerenciar o estado dos pods e serviços, criar e gerenciar objetos personalizados, além de muitas outras tarefas relacionadas ao gerenciamento de um cluster Kubernetes.
+
+O kubectl é uma ferramenta essencial para qualquer pessoa que trabalhe com Kubernetes, como desenvolvedores, administradores de sistemas e operadores de cluster. Ele é usado em um ambiente de terminal para interagir com o cluster Kubernetes e executar operações em qualquer nó ou componente do cluster.
+
+Em resumo, o kubectl é a principal ferramenta de gerenciamento de Kubernetes que permite que você controle e gerencie aplicativos em um cluster Kubernetes.
+
+O <b>CloudShell</b> já vem com o `kubectl` então não precise se preoupar com a instalação, mas caso precise instalar, acesse a documentação: [clique aqui!](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+
+
+### Configurando o Kubectl
+Agora iremos configurar o kubectl, execute o comando abaixo no <b>CloudShell</b>:
 
 ```bash
 aws eks update-kubeconfig --region us-east-1 --name eks-lab
 ```
-
-### Pré-requisitos:
 
 Verificando se os componentes do cluster está executando corretamente:
 
@@ -114,7 +128,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 ```
 
-Verificando se o Scheduler e o Controller-Manager está funcionando corretamente.
+Verificando se o Etcd, Scheduler e o Controller-Manager está funcionando corretamente.
 
 ```
 $ kubectl get componentstatuses
@@ -165,22 +179,9 @@ NAMESPACE     NAME                                DESIRED   CURRENT   READY   AG
 kube-system   replicaset.apps/coredns-58488c5db   2         2         2       9h
 ```
 
-### Conhecendo o kubectl
-
-O kubectl é uma ferramenta de linha de comando utilizada para interagir com clusters Kubernetes. Ele permite que os usuários gerenciem aplicativos e recursos em um cluster Kubernetes, como implantações, serviços, pods, configurações, etc.
-
-Com o kubectl, é possível implantar e escalar aplicativos, fazer rolling updates e rollbacks, gerenciar o estado dos pods e serviços, criar e gerenciar objetos personalizados, além de muitas outras tarefas relacionadas ao gerenciamento de um cluster Kubernetes.
-
-O kubectl é uma ferramenta essencial para qualquer pessoa que trabalhe com Kubernetes, como desenvolvedores, administradores de sistemas e operadores de cluster. Ele é usado em um ambiente de terminal para interagir com o cluster Kubernetes e executar operações em qualquer nó ou componente do cluster.
-
-Em resumo, o kubectl é a principal ferramenta de gerenciamento de Kubernetes que permite que você controle e gerencie aplicativos em um cluster Kubernetes.
-
-Obs: O k3d configura o contexto do cluster de forma automática, então iremos apenas listar os contextos já configurados.
-
 Listando os contextos dos clusters configurados:
 
 ```
-kubectl config get-contexts
 kubectl config get-contexts
 CURRENT   NAME                                                 CLUSTER                                              AUTHINFO                                             NAMESPACE
           arn:aws:eks:us-east-1:679551794714:cluster/abc       arn:aws:eks:us-east-1:679551794714:cluster/abc       arn:aws:eks:us-east-1:679551794714:cluster/abc
@@ -324,7 +325,7 @@ Após aplicado, iremos listar a nossa app.
 Repare que os pods já estão em status de Running.
 
 ```
-$ kubectl get pods -l app=nginx -n ngnix
+$ kubectl get pods -n ngnix
 NAME                     READY   STATUS    RESTARTS   AGE
 nginx-57787bb6df-2sgx7   1/1     Running   0          37s
 nginx-57787bb6df-k27wr   1/1     Running   0          37s
@@ -334,7 +335,7 @@ nginx-57787bb6df-lvrp4   1/1     Running   0          37s
 Trazendo informação mais detalhada dos pods.
 
 ```
-kubectl get pods  -l app=nginx -n nginx -o wide
+kubectl get pods -n nginx -o wide
 NAME                     READY   STATUS    RESTARTS   AGE    IP              NODE                            NOMINATED NODE   READINESS GATES
 nginx-57787bb6df-2sgx7   1/1     Running   0          2m1s   172.31.6.187    ip-172-31-12-186.ec2.internal   <none>           <none>
 nginx-57787bb6df-k27wr   1/1     Running   0          2m1s   172.31.3.92     ip-172-31-12-186.ec2.internal   <none>           <none>
@@ -588,11 +589,11 @@ $ kubectl apply -f manifests/deployment-v1.yaml
 deployment.apps/nginx-deployment configured
 ```
 
-Execute o curl para verificar se alterou a versão.
+Execute o curl para verificar se alterou a página do nosso webserver.
 
 ```
 $ curl http://http://a0d10f8234df541fc807413cb72fe8dc-844940680.us-east-1.elb.amazonaws.com/
-Deploy V1
+<h1>Deploy V1!</h1>
 ```
 
 Ou acesse pelo browser:\
@@ -601,32 +602,26 @@ Ou acesse pelo browser:\
 Após realizar o deploy, vamos realizar o deploy do `manifests/deployment-v2.yaml`
 
 ```
-$ kubectl apply -f manifests/deployment-v1.yaml
+$ kubectl apply -f manifests/deployment-v2.yaml
 deployment.apps/nginx-deployment configured
 ```
 
 Execute o curl para verificar se alterou a versão.
 
 ```
-$ curl http://localhost:9080/
-DEPLOYMENT VERSAO 2
+# curl http://a0d10f8234df541fc807413cb72fe8dc-844940680.us-east-1.elb.amazonaws.com/
+<h1>Deploy V2!</h1>
 ```
 Ou acesse pelo browser:\
 ![nginx](img/deploy-v2.png)
 
 Repare que os pods estão recém criados:
 ```
-$ kubectl get pods -l app=nginx
-NAME                                READY   STATUS    RESTARTS   AGE
-nginx-deployment-75b69f9778-974lm   1/1     Running   0          42s
-nginx-deployment-75b69f9778-jxsch   1/1     Running   0          40s
-```
-
-Realize o curl para retornar testar se estamos utilizar o curl.
-
-```
-$ curl http://http://a0d10f8234df541fc807413cb72fe8dc-844940680.us-east-1.elb.amazonaws.com/
-DEPLOYMENT VERSAO 2
+$ kubectl get pods -l app=nginx -n nginx
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-5fd47c7f7-28h4z   1/1     Running   0          10s
+nginx-5fd47c7f7-gg8qj   1/1     Running   0          10s
+nginx-5fd47c7f7-mqfm5   1/1     Running   0          10s
 ```
 
 Agora iremos realizar o Rollback para a versão 1 do nosso deployment.
@@ -647,6 +642,19 @@ Agora vamos realizar o rollback para a versão 2 da nossa app.
 $ kubectl rollout undo deployment/nginx --to-revision=1 -n nginx
 deployment.apps/nginx rolled back
 ```
+
+Vamos checar se ele alterou para a versão que fizemos a nossa alteração:
+
+Realize o curl para verificar se estamos na Versão 2 da app, lembrando que na linha do tempo a versão 2 do histório de deploy, deve retornar a página com a frase <b>Deploy V1!</b>.
+
+```
+$ curl http://a0d10f8234df541fc807413cb72fe8dc-844940680.us-east-1.elb.amazonaws.com/
+<h1>Deploy V1!</h1>
+```
+Ou acesse pelo browser:\
+![nginx](img/deploy-v1.png)
+
+Pronto, agora você acabou de aprender a fazer rollback para uma versão específica da sua app.
 
 ### Coletado os logs dos pods.
 
@@ -692,7 +700,7 @@ $ kubectl exec -ti nginx-deployment-5954ddfcc9-kl6pl -- sh
 <h1>Hello K8s World</h1>
 ````
 
-### Finalizando o Lab.
+### Finalizando o Lab
 
 Agora é hora de limpar a casa! :)
 
@@ -712,8 +720,34 @@ $ kubectl delete -f 01-deployment.yaml
 deployment.apps "nginx" delete
 ```
 
-E por último vamos deletar o nosso cluster.
+Excluindo o <b>Node Group</b> do Cluster EKS.
 
+Acesse o serviço EKS\
+![nginx](img/1.png)
+
+Clique no cluster do lab\
+![nginx](img/eks-destroy01.png)
+
+Clique na aba <b>Compute</b>\
+![nginx](img/eks-destroy02.png)
+
+Desça até <b>Node groups</b>, selecione o `lab-nodegroup` e clique em <b>Delete</b>\
+![nginx](img/eks-destroy03.png)
+
+Por questão de segurança você precisa colocar o nome do node group para ter certeza que precisa deletar ele (isso evita a deleção acidental), depois clique em <b>Delete</b>!\
+![nginx](img/eks-destroy05.png)
+
+Agora basta esperar alguns minutos para realizar a deleção\
+![nginx](img/eks-destroy06.png)
+
+Pronto, após a deleção do node group, iremos realizar a deletar o Cluster, no cluster clique em <b>Delete cluster</b>.\
+![nginx](img/eks-destroy07.png)
+
+Para deletar coloque o nome do cluster <b>eks-lab</b> para confirmar a deleção, logo em seguida clique em <b>Delete</b>\
+![nginx](img/eks-destroy08.png)
+
+Após confirmar a deleção, o cluster será deletado em alguns minutos.\
+![nginx](img/eks-destroy09.png)
 
 
 ### Conclusão

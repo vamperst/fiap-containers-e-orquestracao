@@ -2,6 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  app: nginx
   name: nginx
   namespace: nginx
 spec:
@@ -23,7 +24,6 @@ spec:
         image: nginx:latest
         command: ["/bin/bash"]
         args: ["-c", "echo '<h1>This is the new Kubernetes default page!</h1>' > /usr/share/nginx/html/index.html && exec nginx -g 'daemon off;'"]
-        restartPolicy: OnFailure
         ports:
         - containerPort: 80
         resources:
