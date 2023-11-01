@@ -34,6 +34,8 @@ Ter o Docker instalado, como dito anteriormente, ele cria o cluster em container
 ### Instalando o Kubectl on Cloud 9
 1. Execute os comandos a seguir para instalar o kubectl:
 ```shell
+cd ~/environment/fiap-containers-e-orquestracao/
+git pull origin master
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
 echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
