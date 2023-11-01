@@ -34,40 +34,40 @@ Ter acesso a conta lab no AWS Academy https://awsacademy.instructure.com/.
 
 ## Provisionando o EKS
 
-Acesse o console da aws e pesquise por EKS e clique em Elastic Kubernetes Service
+Acesse o console da aws e pesquise por EKS e clique em Elastic Kubernetes Service.\
 ![nginx](img/1.png)
 
-Ao clicar na página do serviço clique em <b>Add cluster</b>
+Ao clicar na página do serviço clique em <b>Add cluster</b>.\
 ![nginx](img/2.png)
 
-Depois clique em create
+Depois clique em create.\
 ![nginx](img/3.png)
 
-Ao clicar em create vamos preencher o nome do nosso cluster como `eks-lab` em <b>Nome</b>.
+Ao clicar em create vamos preencher o nome do nosso cluster como `eks-lab` em <b>Nome</b>.\
 ![nginx](img/4.png)
 
-Logo em seguida clique em Next.
+Logo em seguida clique em Next.\
 ![nginx](img/5.png)
 
-Em <b>Subnets</b> selecione as subnets `us-east-1a`, `us-east-1b` e `us-east-1c` e em <b>Security Groups</b> selecione o security group `default`.
+Em <b>Subnets</b> selecione as subnets `us-east-1a`, `us-east-1b` e `us-east-1c` e em <b>Security Groups</b> selecione o security group `default`.\
 ![nginx](img/6.png)
 
-Clique em Next:
+Clique em Next:\
 ![nginx](img/7.png)
 
-Nas configurações de log, em <b>Control plane logging</b> habilite os logs do `API Server`, `Audit`, `Authenticator`, `Controller Manager` e `Scheduler` e depois clique em <b>Next</b>.
+Nas configurações de log, em <b>Control plane logging</b> habilite os logs do `API Server`, `Audit`, `Authenticator`, `Controller Manager` e `Scheduler` e depois clique em <b>Next</b>.\
 ![nginx](img/8.png)
 
-Em <b>add-ons</b> deixe selecionado o `CoreDNS`, `Amazon VPC CNI` e `kube-proxy`, logo em seguida clique em <b>Next</b>.
+Em <b>add-ons</b> deixe selecionado o `CoreDNS`, `Amazon VPC CNI` e `kube-proxy`, logo em seguida clique em <b>Next</b>.\
 ![nginx](img/9.png)
 
-Clique em <b>Next</b>.
+Clique em <b>Next</b>.\
 ![nginx](img/10.png)
 
-Clique em <b>Next</b> novamente para confirmar a instalação das versões dos plugins.
+Clique em <b>Next</b> novamente para confirmar a instalação das versões dos plugins.\
 ![nginx](img/11.png)
 
-Aguarde a criação do cluster, demora em torno de 10 minutos.
+Aguarde a criação do cluster, demora em torno de 10 minutos.\
 ![nginx](img/11.1.png)
 
 ### Cloud Shell
@@ -83,10 +83,10 @@ O AWS Cloud Shell é um ambiente de terminal interativo baseado no navegador que
 - Node.js: Um ambiente de execução JavaScript
 - Git: Um sistema de controle de versão
 
-No concole da AWS, no canto inferior esquerdo, tem o ícone do Cloud Shell, clique nele!
+No concole da AWS, no canto inferior esquerdo, tem o ícone do Cloud Shell, clique nele!\
 ![nginx](img/cd01.png)
 
-Ao clicar no ícone do CloudShell ele irá provisionar um console para você poder utilizar para gerenciar os serviços da aws através de CLI (Command Line Interface).
+Ao clicar no ícone do CloudShell ele irá provisionar um console para você poder utilizar para gerenciar os serviços da aws através de CLI (Command Line Interface).\
 ![nginx](img/cd02.png)
 
 > O CloudShell é como se fosse aqueles consoles que existe em data centers, para quem não conhece:
@@ -134,32 +134,35 @@ No resources found
 O que está faltando provisionar?
 
 ### Provisionando os Nodes Groups
-Ops, faltou provisionarmos o nosso <b>Node Group</b>, para provisionar, em cluster EKS clique em <b>Compute</b> e logo na sequência clique em <b>Add node group</b>.
+Ops, faltou provisionarmos o nosso <b>Node Group</b>, para provisionar, em cluster EKS clique em <b>Compute</b> e logo na sequência clique em <b>Add node group</b>.\
 ![nginx](img/12.png)
 
 Listando os componentes do cluster
 
 ```
 $ kubectl get all --all-namespaces
-NAMESPACE     NAME                                          READY   STATUS    RESTARTS   AGE
-kube-system   pod/coredns-597584b69b-6g8qb                  1/1     Running   0          2m33s
-kube-system   pod/local-path-provisioner-79f67d76f8-8xgw8   1/1     Running   0          2m33s
-kube-system   pod/metrics-server-5f9f776df5-vgr6j           1/1     Running   0          2m33s
 
-NAMESPACE     NAME                     TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                  AGE
-default       service/kubernetes       ClusterIP   10.43.0.1      <none>        443/TCP                  2m47s
-kube-system   service/kube-dns         ClusterIP   10.43.0.10     <none>        53/UDP,53/TCP,9153/TCP   2m43s
-kube-system   service/metrics-server   ClusterIP   10.43.240.11   <none>        443/TCP                  2m42s
+NAMESPACE     NAME                          READY   STATUS    RESTARTS   AGE
+kube-system   pod/aws-node-h4457            2/2     Running   0          174m
+kube-system   pod/aws-node-qhdgm            2/2     Running   0          171m
+kube-system   pod/coredns-58488c5db-6lbn2   1/1     Running   0          171m
+kube-system   pod/coredns-58488c5db-v89qz   1/1     Running   0          172m
+kube-system   pod/kube-proxy-x7sqh          1/1     Running   0          171m
+kube-system   pod/kube-proxy-zwgdr          1/1     Running   0          174m
 
-NAMESPACE     NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
-kube-system   deployment.apps/coredns                  1/1     1            1           2m43s
-kube-system   deployment.apps/local-path-provisioner   1/1     1            1           2m43s
-kube-system   deployment.apps/metrics-server           1/1     1            1           2m42s
+NAMESPACE     NAME                 TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)         AGE
+default       service/kubernetes   ClusterIP   10.100.0.1    <none>        443/TCP         9h
+kube-system   service/kube-dns     ClusterIP   10.100.0.10   <none>        53/UDP,53/TCP   9h
 
-NAMESPACE     NAME                                                DESIRED   CURRENT   READY   AGE
-kube-system   replicaset.apps/coredns-597584b69b                  1         1         1       2m33s
-kube-system   replicaset.apps/local-path-provisioner-79f67d76f8   1         1         1       2m33s
-kube-system   replicaset.apps/metrics-server-5f9f776df5           1         1         1       2m33s
+NAMESPACE     NAME                        DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+kube-system   daemonset.apps/aws-node     2         2         2       2            2           <none>          9h
+kube-system   daemonset.apps/kube-proxy   2         2         2       2            2           <none>          9h
+
+NAMESPACE     NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system   deployment.apps/coredns   2/2     2            2           9h
+
+NAMESPACE     NAME                                DESIRED   CURRENT   READY   AGE
+kube-system   replicaset.apps/coredns-58488c5db   2         2         2       9h
 ```
 
 ### Conhecendo o kubectl
@@ -178,10 +181,10 @@ Listando os contextos dos clusters configurados:
 
 ```
 kubectl config get-contexts
-CURRENT   NAME                                                   CLUSTER                                                    AUTHINFO                                                   NAMESPACE
-          arn:aws:eks:us-east-1:223341017520:cluster/backend     arn:aws:eks:us-east-1:223341017520:cluster/backend         arn:aws:eks:us-east-1:223341017520:cluster/backend
-          docker-desktop                                         docker-desktop                                             docker-desktop
-*         k3d-hands-on                                           k3d-hands-on                                               admin@k3d-hands-on
+kubectl config get-contexts
+CURRENT   NAME                                                 CLUSTER                                              AUTHINFO                                             NAMESPACE
+          arn:aws:eks:us-east-1:679551794714:cluster/abc       arn:aws:eks:us-east-1:679551794714:cluster/abc       arn:aws:eks:us-east-1:679551794714:cluster/abc
+*         arn:aws:eks:us-east-1:679551794714:cluster/eks-lab   arn:aws:eks:us-east-1:679551794714:cluster/eks-lab   arn:aws:eks:us-east-1:679551794714:cluster/eks-lab
 ```
 
 O kubectl pode ser usado para configurar o contexto de um cluster no arquivo ~/.kube/config. Esse arquivo é usado pelo kubectl para determinar qual cluster, usuário e namespace devem ser usados para interagir com o cluster.
@@ -199,25 +202,20 @@ A seguir estão os principais elementos de um contexto configurado no arquivo ~/
 Um exemplo de contexto configurado no arquivo ~/.kube/config pode ser semelhante a este:
 
 ```
-apiVersion: v1
 clusters:
 - cluster:
-    certificate-authority-data: LS0tLS1CRUdJTiBDRVJ....dEQkFtTlRudDBidHUwM2NpTDJFZUVxekdObWZoVE4KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
-    server: https://0.0.0.0:6443
-  name: k3d-hands-on
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJWkxsMFErVjNVRGN3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TXpFeE1ERXdNRE...kwySmsyd2hKUUppUHRNQ1piUlNKS3hDM2tzWkEKUkV3VExGZG5nR1owCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    server: https://SUASUGSHSUAYRSKDKSAUSA.gr7.us-east-1.eks.amazonaws.com
+  name: arn:aws:eks:us-east-1:679551794714:cluster/eks-lab
+- cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJZGg4TWlYc2xiUEV3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TXpFeE1ERXdOVEkwTWpCYUZ3MHp...RU5EIENFUlRJRklDQVRFLS0tLS0K
+    server: https://SUASUGSHSUAYRSKDKSAUSA.gr7.us-east-1.eks.amazonaws.com
+  name: arn:aws:eks:us-east-1:679551794714:cluster/abc
 contexts:
 - context:
-    cluster: k3d-hands-on
-    user: admin@k3d-hands-on
-  name: k3d-hands-on
-current-context: k3d-hands-on
-kind: Config
-preferences: {}
-users:
-- name: admin@k3d-hands-on
-  user:
-    client-certificate-data: LS0tLS1CRUdJTiB...dEQkFtTlRudDBidHUwM2NpTDJFZUVxekdObWZoVE4KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo==
-    client-key-data: LS0tLS1CRUdJTiBFQyBQUklW...dEQkFtTlRudDBidHUwM2NpTDJFZUVxekdObWZoVE4KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+    cluster: arn:aws:eks:us-east-1:679551794714:cluster/eks-lab
+    user: arn:aws:eks:us-east-1:679551794714:cluster/eks-lab
+  name: arn:aws:eks:us-east-1:679551794714:cluster/eks-lab
 ```
 
 ### Realizando o deploy de uma aplicação
@@ -227,22 +225,57 @@ Agora que já entendemos os principais componentes do Cluster, iremos realizar o
 
 Na path /manifests, tem os manifestos para realizarmos o deploy.
 
-Iremos utilizar primeiro o `deployment.yaml`, vamos entender os principais componentes deste manifesto.
+Antes iremos preparar o ambiente criando um namespace (isolamento lógico) `nginx` para podermos realizar o deploy da nossa app.
 
-`manifests/deployment.yaml`
+`manifests/01-namespace.yaml`
 
 ```
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: nginx
+  labels:
+    name: nginx
+```
+
+para criar execute o comando:
+
+```
+$ kubectl apply -f 00-namespace.yaml
+namespace/nginx created
+```
+
+Após a criação do namespace, iremos executar o comando para listar todos os namespaces.
+```
+$ kubectl get namespace
+NAME              STATUS   AGE
+default           Active   10h
+kube-node-lease   Active   10h
+kube-public       Active   10h
+kube-system       Active   10h
+```
+
+Após ter criado o namespace iremos realizar o nosso primeiro o `01-deployment.yaml`, vamos entender os principais componentes deste manifesto.
+
+`manifests/01-deployment.yaml`
+
+```
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
-  labels:
-    app: nginx
+  name: nginx
+  namespace: nginx
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 25%
   template:
     metadata:
       labels:
@@ -251,8 +284,19 @@ spec:
       containers:
       - name: nginx
         image: nginx:latest
+        command: ["/bin/bash"]
+        args: ["-c", "echo '<h1>This is the new Kubernetes default page!</h1>' > /usr/share/nginx/html/index.html && exec nginx -g 'daemon off;'"]
+        restartPolicy: OnFailure
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "256Mi"
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+
 ```
 
 `apiVersion:` especifica a versão da API que está sendo utilizada, neste caso a apps/v1.\
@@ -272,69 +316,75 @@ spec:
 Após entender cada item do nosso manifesto, vamos utilizar ele para realizar o deploy do nosso app.
 
 ```
-$ kubectl apply -f manifests/deployment.yaml
-deployment.apps/nginx-deployment created
+$ kubectl create -f manifests/01-deployment.yaml
+deployment.apps/nginx created
 ```
 
 Após aplicado, iremos listar a nossa app.
+Repare que os pods já estão em status de Running.
 
 ```
-$ kubectl get pods -l app=nginx
-default       nginx-deployment-cd55c47f5-7sbgz          0/1     ContainerCreating   0          7s
-default       nginx-deployment-cd55c47f5-c68ww          0/1     ContainerCreating   0          7s
-```
-
-Vamos realizar o get novamente para verificar se os `PODS` da app subiram.
-
-```
-$ kubectl get pods  -l app=nginx
-NAME                               READY   STATUS    RESTARTS   AGE
-nginx-deployment-cd55c47f5-c68ww   1/1     Running   0          67s
-nginx-deployment-cd55c47f5-7sbgz   1/1     Running   0          67s
+$ kubectl get pods -l app=nginx -n ngnix
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-57787bb6df-2sgx7   1/1     Running   0          37s
+nginx-57787bb6df-k27wr   1/1     Running   0          37s
+nginx-57787bb6df-lvrp4   1/1     Running   0          37s
 ```
 
 Trazendo informação mais detalhada dos pods.
 
 ```
-kubectl get pods  -l app=nginx -o wide
-NAME                                READY   STATUS    RESTARTS   AGE     IP          NODE                    NOMINATED NODE   READINESS GATES
-nginx-deployment-5954ddfcc9-kl6pl   1/1     Running   0          2m14s   10.42.3.7   k3d-hands-on-server-0   <none>           <none>
-nginx-deployment-5954ddfcc9-zchtl   1/1     Running   0          2m10s   10.42.0.7   k3d-hands-on-agent-1    <none>           <none>
+kubectl get pods  -l app=nginx -n nginx -o wide
+NAME                     READY   STATUS    RESTARTS   AGE    IP              NODE                            NOMINATED NODE   READINESS GATES
+nginx-57787bb6df-2sgx7   1/1     Running   0          2m1s   172.31.6.187    ip-172-31-12-186.ec2.internal   <none>           <none>
+nginx-57787bb6df-k27wr   1/1     Running   0          2m1s   172.31.3.92     ip-172-31-12-186.ec2.internal   <none>           <none>
+nginx-57787bb6df-lvrp4   1/1     Running   0          2m1s   172.31.89.245   ip-172-31-93-147.ec2.internal   <none>           <none>
 ```
 
 Conhecendo o POD da nossa app, com o comando `kubectl describe pods <pod-name>`
 
 ```
-$ kubectl describe pods nginx-deployment-cd55c47f5-c68ww
+$ kubectl describe pods nginx-57787bb6df-2sgx7 -n nginx
 
-Name:             nginx-deployment-cd55c47f5-c68ww
-Namespace:        default
+Name:             nginx-57787bb6df-2sgx7
+Namespace:        nginx
 Priority:         0
 Service Account:  default
-Node:             k3d-hands-on-agent-0/172.19.0.4
-Start Time:       Thu, 16 Mar 2023 15:24:44 -0300
+Node:             ip-172-31-12-186.ec2.internal/172.31.12.186
+Start Time:       Wed, 01 Nov 2023 10:34:57 +0000
 Labels:           app=nginx
-                  pod-template-hash=cd55c47f5
+                  pod-template-hash=57787bb6df
 Annotations:      <none>
 Status:           Running
-IP:               10.42.3.3
+IP:               172.31.6.187
 IPs:
-  IP:           10.42.3.3
-Controlled By:  ReplicaSet/nginx-deployment-cd55c47f5
+  IP:           172.31.6.187
+Controlled By:  ReplicaSet/nginx-57787bb6df
 Containers:
   nginx:
-    Container ID:   containerd://397d8c86512c9c647e4579d42da4b26e12abcfd860bd484e46603b16ed1de585
-    Image:          nginx:latest
-    Image ID:       docker.io/library/nginx@sha256:aa0afebbb3cfa473099a62c4b32e9b3fb73ed23f2a75a65ce1d4b4f55a5c2ef2
-    Port:           80/TCP
-    Host Port:      0/TCP
+    Container ID:  containerd://c35a0fa58303cdb880aa93533a72eedfed286f468cceb71e7e4d4cc3338caa4a
+    Image:         nginx:latest
+    Image ID:      docker.io/library/nginx@sha256:775b948ed18e931cfe48c4664387162764dcf286303bbe02bd72703f72f17f02
+    Port:          80/TCP
+    Host Port:     0/TCP
+    Command:
+      /bin/bash
+    Args:
+      -c
+      echo '<h1>Hello K8s World</h1>' > /usr/share/nginx/html/index.html && exec nginx -g 'daemon off;'
     State:          Running
-      Started:      Thu, 16 Mar 2023 15:24:55 -0300
+      Started:      Wed, 01 Nov 2023 10:35:06 +0000
     Ready:          True
     Restart Count:  0
-    Environment:    <none>
+    Limits:
+      cpu:     100m
+      memory:  256Mi
+    Requests:
+      cpu:        50m
+      memory:     128Mi
+    Environment:  <none>
     Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-bqld7 (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-lxp86 (ro)
 Conditions:
   Type              Status
   Initialized       True
@@ -342,58 +392,69 @@ Conditions:
   ContainersReady   True
   PodScheduled      True
 Volumes:
-  kube-api-access-bqld7:
+  kube-api-access-lxp86:
     Type:                    Projected (a volume that contains injected data from multiple sources)
     TokenExpirationSeconds:  3607
     ConfigMapName:           kube-root-ca.crt
     ConfigMapOptional:       <nil>
     DownwardAPI:             true
-QoS Class:                   BestEffort
+QoS Class:                   Burstable
 Node-Selectors:              <none>
 Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
                              node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
 Events:
-  Type    Reason     Age   From               Message
-  ----    ------     ----  ----               -------
-  Normal  Scheduled  15m   default-scheduler  Successfully assigned default/nginx-deployment-cd55c47f5-c68ww to k3d-hands-on-agent-0
-  Normal  Pulling    15m   kubelet            Pulling image "nginx:latest"
-  Normal  Pulled     15m   kubelet            Successfully pulled image "nginx:latest" in 10.701844921s (10.701860672s including waiting)
-  Normal  Created    15m   kubelet            Created container nginx
-  Normal  Started    15m   kubelet            Started container nginx
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  3m27s  default-scheduler  Successfully assigned nginx/nginx-57787bb6df-2sgx7 to ip-172-31-12-186.ec2.internal
+  Normal  Pulling    3m23s  kubelet            Pulling image "nginx:latest"
+  Normal  Pulled     3m19s  kubelet            Successfully pulled image "nginx:latest" in 4.843s (4.843s including waiting)
+  Normal  Created    3m19s  kubelet            Created container nginx
+  Normal  Started    3m18s  kubelet            Started container nginx
 ```
 
 Conhecendo o nosso deploy, utilizando o comando `kubectl describe deploy <deploy-name>`, mas antes iremos pegar o nome do nosso deploy\
-Primeiro vamos realizar o `kubectl get deploy` para listar todos os deploys de todos os namespaces.\
+Primeiro vamos realizar o `kubectl get deploy` para listar todos os deploys de todos os namespaces.
 
 
 ```
-$ kubectl get deploy
-NAME               READY   UP-TO-DATE   AVAILABLE   AGE
-nginx-deployment   2/2     2            2           20m
+$ kubectl get deploy nginx -n nginx
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   3/3     3            3           115m
 ```
 
-Descrevendo o deploy `nginx-deployment`.
+Descrevendo o deploy `nginx`.
 
 ```
-$ kubectl describe deploy nginx-deployment
+$ kubectl describe deploy nginx -n nginx
 
-Name:                   nginx-deployment
-Namespace:              default
-CreationTimestamp:      Thu, 16 Mar 2023 15:24:44 -0300
-Labels:                 app=nginx
+Name:                   nginx
+Namespace:              nginx
+CreationTimestamp:      Wed, 01 Nov 2023 10:34:57 +0000
+Labels:                 <none>
 Annotations:            deployment.kubernetes.io/revision: 1
 Selector:               app=nginx
-Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable
 StrategyType:           RollingUpdate
 MinReadySeconds:        0
-RollingUpdateStrategy:  25% max unavailable, 25% max surge
+RollingUpdateStrategy:  25% max unavailable, 100% max surge
 Pod Template:
   Labels:  app=nginx
   Containers:
    nginx:
-    Image:        nginx:latest
-    Port:         80/TCP
-    Host Port:    0/TCP
+    Image:      nginx:latest
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Command:
+      /bin/bash
+    Args:
+      -c
+      echo '<h1>Hello K8s World</h1>' > /usr/share/nginx/html/index.html && exec nginx -g 'daemon off;'
+    Limits:
+      cpu:     100m
+      memory:  256Mi
+    Requests:
+      cpu:        50m
+      memory:     128Mi
     Environment:  <none>
     Mounts:       <none>
   Volumes:        <none>
@@ -403,37 +464,35 @@ Conditions:
   Available      True    MinimumReplicasAvailable
   Progressing    True    NewReplicaSetAvailable
 OldReplicaSets:  <none>
-NewReplicaSet:   nginx-deployment-cd55c47f5 (2/2 replicas created)
-Events:
-  Type    Reason             Age   From                   Message
-  ----    ------             ----  ----                   -------
-  Normal  ScalingReplicaSet  22m   deployment-controller  Scaled up replica set nginx-deployment-cd55c47f5 to 2
+NewReplicaSet:   nginx-57787bb6df (3/3 replicas created)
+Events:          <none>
 ```
 
 ### Acessando a App
 
 Para acessar a app, precisamos expor o serviço em nosso cluster apontando para os nossos pods.
 
-Criando a service para poder acessar a app, o manifesto está na path `manifests/service.yaml`.
-
+Criando a service para poder acessar a app, o manifesto está na path `manifests/02-service-nginx.yaml`.\
 O conteúdo do manifesto é:
 
-`manifests/service.yaml`
+`manifests/02-service-nginx.yaml`
 
 
 ```
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service
+  name: nginx
+  namespace: nginx
 spec:
-  type: LoadBalancer
   selector:
     app: nginx
   ports:
-  - name: http
+  - protocol: TCP
     port: 80
     targetPort: 80
+  type: LoadBalancer
 ````
 
 Este manifesto descreve um serviço do Kubernetes com as seguintes configurações:
@@ -449,26 +508,26 @@ Este manifesto descreve um serviço do Kubernetes com as seguintes configuraçõ
 Após entender cada item do nosso manifesto, vamos utilizar ele para realizar o deploy da nossa service.
 
 ```
-$ kubectl apply -f manifests/service.yaml
+$ kubectl apply -f manifests/02-service-nginx.yaml
 service/nginx-service created
 ```
 
-Checando se a service foi criada com sucesso.
-```
-$ kubectl get service
-NAME            TYPE           CLUSTER-IP      EXTERNAL-IP                                   PORT(S)        AGE
-kubernetes      ClusterIP      10.43.0.1       <none>                                        443/TCP        18m
-nginx-service   LoadBalancer   10.43.169.188   172.22.0.3,172.22.0.4,172.22.0.5,172.22.0.6   80:31258/TCP   8m16s
-```
-
-Repare que a nossa service `nginx-service` foi criada com sucesso.
-
-Agora vamos acessar o app através do navegador, digite a url abaixo:
+Acessado a nossa "app" via Load Balancer.
 
 ```
-http://localhost:9080/
+$ kubectl get service -n nginx
+NAME    TYPE           CLUSTER-IP     EXTERNAL-IP                                                              PORT(S)        AGE
+nginx   LoadBalancer   10.100.84.30   a0d10f8234df541fc807413cb72fe8dc-844940680.us-east-1.elb.amazonaws.com   80:32469/TCP   14s
 ```
-![nginx](img/nginx-frontend.png)
+
+Repare que a nossa service `nginx` foi criada com sucesso.
+
+Agora vamos acessar o app através do navegador, digite a url do Load Balancer:
+
+```
+http://a0d10f8234df541fc807413cb72fe8dc-844940680.us-east-1.elb.amazonaws.com/
+```
+![nginx](img/service-01.png)
 
 Sucesso! conseguimos acessar a nossa app.
 
@@ -477,37 +536,38 @@ Sucesso! conseguimos acessar a nossa app.
 Para escalar os pods iremos executar o comando `kubectl scale deployment`, atualmente temos 2 répicas e iremos aumentar para 8 réplicas.
 
 ```
-kubectl scale deployment nginx-deployment --replicas=8
-deployment.apps/nginx-deployment scaled
+$ kubectl scale deployment nginx --replicas=8 -n nginx
+deployment.apps/nginx scaled
 ```
 
 Checando se foi escalado corretamente.
 
 ```
-$ kubectl get pods -l app=nginx
-NAME                               READY   STATUS              RESTARTS   AGE
-nginx-deployment-cd55c47f5-c68ww   1/1     Running             0          47m
-nginx-deployment-cd55c47f5-7sbgz   1/1     Running             0          47m
-nginx-deployment-cd55c47f5-nw5vn   0/1     ContainerCreating   0          3s
-nginx-deployment-cd55c47f5-nbpgb   0/1     ContainerCreating   0          3s
-nginx-deployment-cd55c47f5-l6mnv   0/1     ContainerCreating   0          3s
-nginx-deployment-cd55c47f5-trrw9   0/1     ContainerCreating   0          3s
-nginx-deployment-cd55c47f5-85rfb   0/1     ContainerCreating   0          3s
-nginx-deployment-cd55c47f5-zhj67   1/1     Running             0          3s
+$ kubectl get pods -n nginx
+NAME                     READY   STATUS              RESTARTS   AGE
+nginx-57787bb6df-2sgx7   1/1     Running             0          128m
+nginx-57787bb6df-dk7wt   0/1     ContainerCreating   0          3s
+nginx-57787bb6df-k27wr   1/1     Running             0          128m
+nginx-57787bb6df-lvrp4   1/1     Running             0          128m
+nginx-57787bb6df-m5kch   0/1     ContainerCreating   0          3s
+nginx-57787bb6df-r2sgf   0/1     ContainerCreating   0          3s
+nginx-57787bb6df-r4qzq   0/1     ContainerCreating   0          3s
+nginx-57787bb6df-sn64c   0/1     ContainerCreating   0          3s
 ```
 
 Repare que os containers foram escalados para 8 réplicas.
 
 ```
-NAME                               READY   STATUS    RESTARTS   AGE
-nginx-deployment-cd55c47f5-c68ww   1/1     Running   0          48m
-nginx-deployment-cd55c47f5-7sbgz   1/1     Running   0          48m
-nginx-deployment-cd55c47f5-zhj67   1/1     Running   0          71s
-nginx-deployment-cd55c47f5-l6mnv   1/1     Running   0          71s
-nginx-deployment-cd55c47f5-nbpgb   1/1     Running   0          71s
-nginx-deployment-cd55c47f5-nw5vn   1/1     Running   0          71s
-nginx-deployment-cd55c47f5-trrw9   1/1     Running   0          71s
-nginx-deployment-cd55c47f5-85rfb   1/1     Running   0          71s
+$ kubectl get pods -n nginx
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-57787bb6df-2sgx7   1/1     Running   0          3h29m
+nginx-57787bb6df-dk7wt   1/1     Running   0          80m
+nginx-57787bb6df-k27wr   1/1     Running   0          3h29m
+nginx-57787bb6df-lvrp4   1/1     Running   0          3h29m
+nginx-57787bb6df-m5kch   1/1     Running   0          80m
+nginx-57787bb6df-r2sgf   1/1     Running   0          80m
+nginx-57787bb6df-r4qzq   1/1     Running   0          80m
+nginx-57787bb6df-sn64c   1/1     Running   0          80m
 ```
 
 Pronto os PODs foram escalados com sucesso!
@@ -515,8 +575,8 @@ Pronto os PODs foram escalados com sucesso!
 Vamos voltar para duas réplicas.
 
 ```
-kubectl scale deployment nginx-deployment --replicas=2
-deployment.apps/nginx-deployment scaled
+$ kubectl scale deployment nginx --replicas=2 -n nginx
+deployment.apps/nginx scaled
 ```
 
 ### Realizando rollback de versão
@@ -531,9 +591,12 @@ deployment.apps/nginx-deployment configured
 Execute o curl para verificar se alterou a versão.
 
 ```
-$ curl http://localhost:9080/
-DEPLOYMENT VERSAO 1
+$ curl http://http://a0d10f8234df541fc807413cb72fe8dc-844940680.us-east-1.elb.amazonaws.com/
+Deploy V1
 ```
+
+Ou acesse pelo browser:\
+![nginx](img/deploy-v1.png)
 
 Após realizar o deploy, vamos realizar o deploy do `manifests/deployment-v2.yaml`
 
@@ -548,6 +611,8 @@ Execute o curl para verificar se alterou a versão.
 $ curl http://localhost:9080/
 DEPLOYMENT VERSAO 2
 ```
+Ou acesse pelo browser:\
+![nginx](img/deploy-v1.png)
 
 Repare que os pods estão recém criados:
 ```
@@ -560,7 +625,7 @@ nginx-deployment-75b69f9778-jxsch   1/1     Running   0          40s
 Realize o curl para retornar testar se estamos utilizar o curl.
 
 ```
-$ curl http://localhost:9080/
+$ curl http://http://a0d10f8234df541fc807413cb72fe8dc-844940680.us-east-1.elb.amazonaws.com/
 DEPLOYMENT VERSAO 2
 ```
 
@@ -568,7 +633,7 @@ Agora iremos realizar o Rollback para a versão 1 do nosso deployment.
 O Deployment cria uma revisão a cada alteração no deploy, para listar essas versões iremos utilizar o `kubectl rollout history`:
 
 ```
-$ kubectl rollout history deploy nginx-deployment
+$ kubectl rollout history deploy nginx -n nginx
 deployment.apps/nginx-deployment
 REVISION  CHANGE-CAUSE
 1         <none>
@@ -579,8 +644,8 @@ REVISION  CHANGE-CAUSE
 Agora vamos realizar o rollback para a versão 2 da nossa app.
 
 ```
-$ kubectl rollout undo deployment/nginx-deployment --to-revision=1
-deployment.apps/nginx-deployment rolled back
+$ kubectl rollout undo deployment/nginx --to-revision=1 -n nginx
+deployment.apps/nginx rolled back
 ```
 
 ### Coletado os logs dos pods.
@@ -624,7 +689,7 @@ Para executar comandos dentro dos pods, iremos utilizar o `kubectl exec -ti <pod
 ```
 $ kubectl exec -ti nginx-deployment-5954ddfcc9-kl6pl -- sh
 # curl localhost
-DEPLOYMENT VERSAO 1
+<h1>Hello K8s World</h1>
 ````
 
 ### Finalizando o Lab.
@@ -636,28 +701,20 @@ Vamos deletar os objetos que criamos dentro do nosso cluster Kubernetes
 Deletando a Service:
 
 ```
-$ kubectl delete -f service.yaml
-service "nginx-service" deleted
+$ kubectl delete -f 02-service-nginx.yaml
+service "nginx" deleted
 ```
 
 Deletendo o Deployment:
 
 ```
-kubectl delete -f deployment-v1.yaml
-deployment.apps "nginx-deployment" delete
+$ kubectl delete -f 01-deployment.yaml
+deployment.apps "nginx" delete
 ```
 
 E por último vamos deletar o nosso cluster.
 
-```
-k3d cluster delete hands-on
-INFO[0000] Deleting cluster 'hands-on'
-INFO[0001] Deleting cluster network 'k3d-hands-on'
-INFO[0001] Deleting 1 attached volumes...
-INFO[0001] Removing cluster details from default kubeconfig...
-INFO[0001] Removing standalone kubeconfig file (if there is one)...
-INFO[0001] Successfully deleted cluster hands-on!
-```
+
 
 ### Conclusão
 Parabéns, você concluiu com sucesso este laboratório de hands-on de Kubernetes!
