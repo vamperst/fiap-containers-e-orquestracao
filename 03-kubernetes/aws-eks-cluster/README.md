@@ -612,7 +612,7 @@ $ curl http://localhost:9080/
 DEPLOYMENT VERSAO 2
 ```
 Ou acesse pelo browser:\
-![nginx](img/deploy-v1.png)
+![nginx](img/deploy-v2.png)
 
 Repare que os pods estão recém criados:
 ```
