@@ -591,7 +591,21 @@ OUTPUT:
 service/nginx-service created
 ```
 
-33. Acessado a nossa "app" via Load Balancer.
+33. Antes de acessar o app pelo browser, vamos liberar o security group dos EC2 do node group para acessar o Load Balancer. Para isso acesse o painel de [EC2 Rodando](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:instanceState=running).
+34. Selecione um dos 2 EC2  do tipo t3.medium que estão sem nome.
+    
+    ![](img/sg-1.png)
+35. Selecione a aba `Security` na parte inferior da tela. E clique no link em azul iniciando com `sg-`
+    
+    ![](img/sg-2.png)
+    ![](img/sg-3.png)
+36. Clique na aba `Inbound Rules` e depois no botão `Edit inbound rules` no canto inferior direito.
+    
+37. Delete todas as regras e clique em `Add rule`. No tipo coloque `all traffic` ou `Todo Trafego` em português e em source coloque `Anywhere-IpV4`. Clique em `Save rules`.
+
+![](img/sg-4.png)
+
+37. Acessado a nossa "app" via Load Balancer.
 
 ``` shell
 kubectl get service -n nginx
