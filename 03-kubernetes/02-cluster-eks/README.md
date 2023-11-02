@@ -808,7 +808,7 @@ Vamos deletar os objetos que criamos dentro do nosso cluster Kubernetes
 47. Deletando a Service:
 
 ``` shell
-kubectl delete -f 02-service-nginx.yaml
+kubectl delete -f manifests/02-service-nginx.yaml
 ```
 
 ```shell
@@ -819,7 +819,7 @@ service "nginx" deleted
 48. Deletendo o Deployment:
 
 ``` shell
-kubectl delete -f 01-deployment.yaml
+kubectl delete -f manifests/01-deployment.yaml
 ```
 
 ```shell
