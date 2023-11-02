@@ -708,7 +708,7 @@ deployment.apps/nginx-deployment configured
 40. Execute o curl para verificar se alterou a página do nosso webserver.
 
 ``` shell
-curl http://http://a0d10f8234df541fc807413cb72fe8dc-844940680.us-east-1.elb.amazonaws.com/
+curl http://a0d10f8234df541fc807413cb72fe8dc-844940680.us-east-1.elb.amazonaws.com/
 ```
 
 ```shell
