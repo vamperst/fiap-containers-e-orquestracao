@@ -10,9 +10,7 @@ Para executar o trabalho crie uma pasta na raiz do cloud9. Para tal execute o co
       apt-get install -y -q curl gnupg2
    RUN curl http://nginx.org/keys/nginx_signing.key | apt-key add -
    RUN apt-get update && \
-      apt-get install -y -q nginx   
-   ADD nginx.conf /etc/nginx/
-   ADD server.conf /etc/nginx/conf.d
+      apt-get install -y -q nginx
    EXPOSE 443 80
    CMD ["nginx", "-g", "daemon off;"]
    ```
