@@ -3,15 +3,26 @@
 Para executar o trabalho crie uma pasta na raiz do cloud9. Para tal execute o comando `mkdir -p ~/environment/trabalho-final && cd ~/environment/trabalho-final`
 
 1. Crie um Dockerfile que instale um NGINX utilizando um Ubuntu latest como base.
-   1. Imagem a ser utilizada como base: [ubuntu:latest](https://hub.docker.com/_/ubuntu)
-   2. Documentação de como instalar e rodar o nginx em ubuntu: [How To Install Nginx on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-22-04)
+   *** <b>DEVIDO A UM ERRO ESTOU POSTANDO O CONTEÚDO DO ARQUIVO DOCKERFILE. É SÓ COPIAR E IR PARA O PASSO 2</b>***
+   ``` Dockerfile
+   FROM ubuntu:18.04
+   RUN apt-get update -y && \
+      apt-get install -y -q curl gnupg2
+   RUN curl <http://nginx.org/keys/nginx_signing.key> | apt-key add -
+   RUN apt-get update && \
+      apt-get install -y -q nginx
+   ADD nginx.conf /etc/nginx/
+   ADD server.conf /etc/nginx/conf.d
+   EXPOSE 443 80
+   CMD ["nginx", "-g", "daemon off;"]
+   ```
 2. Execute o build da sua imagem dando o nome de nginx-trabalho-final.
-2. Crie um cluster swarm.
-3. Crie um repositório do ECR e faça o push da imagem montada no passo 2.
-4. Crie um docker-compose.yml que contenha:
+3. Crie um cluster swarm.
+4. Crie um repositório do ECR e faça o push da imagem montada no passo 2.
+5. Crie um docker-compose.yml que contenha:
    1. Um serviço chamado "web" que utiliza sua imagem do ECR, utilize a porta 80 do container e porta 5000 do nó e que apenas possa ser executado no nó manager.
    2. Criar uma network chamada "servico" do tipo overlay e attachable
-5. Rode o docker compose criado no cluster swarm.
+6. Rode o docker compose criado no cluster swarm.
 
 
 ##### Entregavel
